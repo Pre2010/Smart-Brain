@@ -1,6 +1,10 @@
-A React web application that uses machine learning to find and point out faces in an image.
+A React web application that uses machine learning to find and point out faces in an image.  Will later have a Node.js and Express backed with PostgresSQL for further authentication and user profile data.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## API Key from Clarifai
+
+To be able to use the face recognition portion of the code and the API, you will need to get an API key from Clarifai and input it in 'App.js' apiKey property.
 
 ## Available Scripts
 

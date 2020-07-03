@@ -1,3 +1,5 @@
+A React web application that uses machine learning to find and point out faces in an image.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

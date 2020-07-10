@@ -6,6 +6,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 To be able to use the face recognition portion of the code and the API, you will need to get an API key from Clarifai and input it in 'App.js' apiKey property.
 
+## For the Back-End API
+
+Go to **[Smart-Brain-API](https://github.com/Pre2010/Smart-Brain-API)**. And pull in that project.
+
+
 ## Available Scripts
 
 In the project directory, you can run:

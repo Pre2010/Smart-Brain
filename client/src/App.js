@@ -108,25 +108,48 @@ class App extends Component {
     })
   }
 
+  resetState = () => {
+    this.setState({
+      input: '',
+      imageUrl: '',
+      box: [],
+      route: 'login',
+      isLoggedIn: false,
+      user: {
+        _id: '',
+        name: '',
+        username: '',
+        entries: 0,
+        joined: '',
+      },
+    });
+  };
+
   calculateFaceLocation = (data) => {
-    // location of the bounding box in the output
-    const clarifaiFaceBoundingBox = data.outputs[0].data.regions[0].region_info.bounding_box;
+    // array of location of the bounding boxes in the output
+    let arrayOfFaceBoundingBox = [];
+
     // image that gets displayed in the app
     const image = document.getElementById('inputImage');
 
     // get the width and height of the image to perform calculations on
     const width = Number(image.width);
     const height = Number(image.height);
-    return {
-      // the left_col is a percentage of our width so we multiply them and set leftCol to the result.
-      // same with top row but with height
-      leftCol: clarifaiFaceBoundingBox.left_col * width,
-      topRow: clarifaiFaceBoundingBox.top_row * height,
-      // we want to get the number that is the total percentage (right_col * width) minus the left most side of the width (width)
-      // same with bottomRow
-      rightCol: width - (clarifaiFaceBoundingBox.right_col * width),
-      bottomRow: height - (clarifaiFaceBoundingBox.bottom_row * height)
+
+    // goes through the data.outputs array and adds each face the API finds in the image to our array
+    for (let faceBoundBox of data.outputs[0].data.regions) {
+      arrayOfFaceBoundingBox.push({
+        // the left_col is a percentage of our width so we multiply them and set leftCol to the result.
+        // same with top row but with height
+        leftCol: faceBoundBox.region_info.bounding_box.left_col * width,
+        topRow: faceBoundBox.region_info.bounding_box.top_row * height,
+        // we want to get the number that is the total percentage (right_col * width) minus the left most side of the width (width)
+        // same with bottomRow
+        rightCol: width - (faceBoundBox.region_info.bounding_box.right_col * width),
+        bottomRow: height - (faceBoundBox.region_info.bounding_box.bottom_row * height)
+      })
     }
+    return arrayOfFaceBoundingBox;
   }
 
   displayFaceBoxOutline = (boxOutline) => {
@@ -172,7 +195,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signedOut') {
-      this.setState(initialState)
+      this.resetState();
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }
@@ -186,7 +209,10 @@ class App extends Component {
         <Particles 
           className='particles'
           params={particlesOptions} />
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
+        <Navigation 
+          resetState={this.resetState}
+          onRouteChange={this.onRouteChange} 
+          isSignedIn={isSignedIn} />
         { route === 'home' ?
           <div>
             <Logo />
